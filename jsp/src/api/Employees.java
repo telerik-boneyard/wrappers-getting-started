@@ -8,15 +8,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.List;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import models.Employee;
+
+import com.google.gson.Gson;
+
+import repositories.EmployeeRepository;
 
 /**
  * Servlet implementation class Employee
@@ -25,11 +31,20 @@ import org.json.simple.JSONObject;
 public class Employees extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private repositories.EmployeeRepository _repository = null; 
+	private Gson _gson = new Gson();
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Employees() {
+    public Employees() {    	
     	super();
+    }
+    
+    public void init() throws ServletException {
+    	super.init();
+    	
+    	_repository = new EmployeeRepository(this.getServletContext().getRealPath("data/sample.db"));
     }
 
 	/**
@@ -37,75 +52,22 @@ public class Employees extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// create a JSON object to send back
-		JSONObject obj = new JSONObject();
-		JSONArray data = new JSONArray();
-		
 		try {
 			
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/adventureworks", "root", "root");
-			PreparedStatement stmt = getEmployeesStmt(request.getParameter("id"), conn);
-						
-			ResultSet rs = stmt.executeQuery();
-					
-			while(rs.next()) {
-						
-				JSONObject person = new JSONObject();
-						
-				person.put("id", rs.getInt("EmployeeID"));
-				person.put("managerId", rs.getString("ManagerID"));
-				person.put("name", rs.getString("Name"));
-				person.put("hasChildren", rs.getInt("DirectReports") > 0);
-				
-				data.add(person);
-			}
+			// get the managerid off of the querystring if it exsists. if it does not exist, just set
+			// it to 0
+			int managerId = request.getParameter("EmployeeID") == null ? 0 : Integer.parseInt(request.getParameter("EmployeeID"));
 			
-			rs.close();
-			stmt.close();
-			
-			obj.put("msg", "ok");
-			obj.put("data", data);
-			
-		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				obj.put("msg", "sad trombone...");
-			}
+			List<Employee> employees = _repository.listEmployees(managerId);
 			
 			// set the content type we are sending back as JSON
 			response.setContentType("application/json"); 
-			
+						
 			// print the content to the response
-			response.getWriter().print(obj);
-		}
-
-	protected PreparedStatement getEmployeesStmt (String managerId, Connection conn) {
-		
-		PreparedStatement stmt = null;
-		
-		try {
-			
-			String query = "SELECT e.EmployeeID, e.ManagerID, CONCAT(c.FirstName, ' ', c.LastName) AS Name, " +
-						   "(SELECT COUNT(*) FROM employee WHERE ManagerID = e.EmployeeID) AS DirectReports " +
-	 					   "From employee e " +
-	 					   "JOIN contact c ON e.ContactID = c.ContactID ";
-			
-			if (managerId != null) {
-				query += "WHERE ManagerID = ?";
-				stmt = conn.prepareStatement(query);
-				stmt.setInt(1, Integer.parseInt(managerId));
-			}
-			else {
-				query += "WHERE ManagerID IS NULL";
-				stmt = conn.prepareStatement(query);
-			}
-		}
-		catch (SQLException e) {
+			response.getWriter().print(_gson.toJson(employees));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return stmt;
 	}
 	
 	/**
