@@ -55,9 +55,9 @@ public class EmployeeTerritoryRepository {
 				
 				employeeTerritory.setEmployeeID(rs.getInt("EmployeeID"));
 				employeeTerritory.setTerritoryID(rs.getInt("TerritoryID"));
-				employeeTerritory.setTerritoryDescription(rs.getString("TerritoryDescription"));
+				employeeTerritory.setTerritoryDescription(rs.getString("TerritoryDescription").trim());
 				employeeTerritory.setRegionID(rs.getInt("RegionID"));
-				employeeTerritory.setRegionDescription(rs.getString("RegionDescription"));
+				employeeTerritory.setRegionDescription(rs.getString("RegionDescription").trim());
 				
 				employeeTerritories.add(employeeTerritory);
 			}

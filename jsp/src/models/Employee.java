@@ -39,6 +39,9 @@ public class Employee {
 	public void setHasChildren(Boolean hasChildren) {
 		HasChildren = hasChildren;
 	}
+	public String getFullName() {
+		return FullName;
+	}
 	public void setFullName() {
 		FullName = FirstName + " " + LastName;
 	}

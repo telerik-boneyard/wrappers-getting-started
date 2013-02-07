@@ -1,6 +1,7 @@
 package api;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Employee;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import repositories.EmployeeRepository;
 
@@ -54,8 +56,7 @@ public class Employees extends HttpServlet {
 		
 		try {
 			
-			// get the managerid off of the querystring if it exsists. if it does not exist, just set
-			// it to 0
+			// get the managerId off of the request
 			int managerId = request.getParameter("EmployeeID") == null ? 0 : Integer.parseInt(request.getParameter("EmployeeID"));
 			
 			List<Employee> employees = _repository.listEmployees(managerId);
