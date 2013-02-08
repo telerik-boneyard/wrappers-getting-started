@@ -93,7 +93,7 @@ public class ProductsRepository extends RepositoryBase {
 		return products;
 	}
 
-	public void doUpdateProduct(models.Product product) throws Exception {
+	public models.Product doUpdateProduct(models.Product product) throws Exception {
 
 		PreparedStatement stmt = null;
 
@@ -122,6 +122,8 @@ public class ProductsRepository extends RepositoryBase {
 		finally {
 			stmt.close();
 		}
+		
+		return product;
 	}
 	
 	public int doCreateProduct(models.Product product) throws Exception {
@@ -164,6 +166,24 @@ public class ProductsRepository extends RepositoryBase {
 		}
 		
 		return id;
+	}
+	
+	public void doDeleteProduct(int productId) throws SQLException {
+		
+		PreparedStatement stmt = null;
+		
+		try {
+			
+			String sql = "DELETE FROM Products WHERE ProductID = ?";
+			
+			stmt = super.connection.prepareStatement(sql);
+			stmt.setInt(1, productId);
+			
+			stmt.executeUpdate();
+		}
+		finally {
+			stmt.close();
+		}
 	}
 	
 }

@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="span12">
 				<kendo:grid name="products" pageable="true">
-					<kendo:grid-editable mode="inline"/>
+					<kendo:grid-editable mode="popup"/>
 					<kendo:grid-toolbar>
 						<kendo:grid-toolbarItem name="create" />
 					</kendo:grid-toolbar>
@@ -30,7 +30,9 @@
 						<kendo:dataSource-schema data="Data" total="Total">
 							<kendo:dataSource-schema-model id="ProductID">
 								<kendo:dataSource-schema-model-fields>
-									<kendo:dataSource-schema-model-field name="ProductName"></kendo:dataSource-schema-model-field>
+									<kendo:dataSource-schema-model-field name="ProductName">
+										<kendo:dataSource-schema-model-field-validation required="true"/>
+									</kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="SupplierName"></kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="CategoryName"></kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="UnitPrice" type="number"></kendo:dataSource-schema-model-field>
@@ -42,9 +44,9 @@
 					</kendo:dataSource>
 					<kendo:grid-columns>
 						<kendo:grid-column field="ProductName" title="Product"></kendo:grid-column>
-						<kendo:grid-column field="SupplierName" title="Supplier"></kendo:grid-column>
-						<kendo:grid-column field="CategoryName" title="Category" width="150px"></kendo:grid-column>
-						<kendo:grid-column field="UnitPrice" title="Price" width="75px"></kendo:grid-column>
+						<kendo:grid-column field="SupplierID" title="Supplier" editor="supplierEditor" template="#: SupplierName #"></kendo:grid-column>
+						<kendo:grid-column field="CategoryID" title="Category" width="150px" editor="categoryEditor" template="#: CategoryName #"></kendo:grid-column>
+						<kendo:grid-column field="UnitPrice" title="Price" format="{0:c}" width="75px"></kendo:grid-column>
 						<kendo:grid-column field="UnitsInStock" title="# In Stock" width="80px"></kendo:grid-column>
 						<kendo:grid-column field="Discontinued" title="Discontinued" width="100px"></kendo:grid-column>
 						<kendo:grid-column>
@@ -58,6 +60,34 @@
 			</div>
 		</div>
 	</div>
+	
+	<script>
+	
+		function categoryEditor(container, options) {
+			$("<input data-text-field='CategoryName' data-value-field='CategoryID' data-bind='value:" + options.field + "' />")
+			.appendTo(container)
+			.kendoDropDownList({
+				dataSource: {
+					transport: {
+						read: "api/categories"
+					}
+				}
+			});
+		};
+		
+		function supplierEditor(container, options) {
+			$("<input data-text-field='SupplierName' data-value-field='SupplierID' data-bind='value:" + options.field + "' />")
+			.appendTo(container)
+			.kendoDropDownList({
+				dataSource: {
+					transport: {
+						read: "api/suppliers"
+					}
+				}
+			});
+		}
+	
+	</script>
 
 </body>
 </html>

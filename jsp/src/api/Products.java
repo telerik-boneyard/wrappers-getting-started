@@ -1,6 +1,9 @@
 package api;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,7 +67,8 @@ public class Products extends HttpServlet {
 
 		try {
 
-			System.out.println();
+			// set the content type we are sending back as JSON
+			response.setContentType("application/json");
 			
 	    	int productId = request.getParameter("ProductID") == "" ? 0 : Integer.parseInt(request.getParameter("ProductID"));
 	
@@ -78,12 +82,15 @@ public class Products extends HttpServlet {
 		    	product.setProductID(productId);
 		
 		    	// update the product
-		    	_repository.doUpdateProduct(product);
+		    	product = _repository.doUpdateProduct(product);
+	    	
+		    	response.getWriter().print(_gson.toJson(product));
 	    	}
 	    	// otherwise it is a create
 	    	else {
 	    		// 	create the product
-	    		_repository.doCreateProduct(product);
+	    		productId = _repository.doCreateProduct(product);
+	    		response.getWriter().print(_gson.toJson(productId));
 	    	}
 		}
 		catch (Exception e) {
@@ -91,6 +98,27 @@ public class Products extends HttpServlet {
 			response.sendError(500);
 		}
 
+	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		try {
+			
+			Enumeration<String> names = request.getParameterNames();
+			
+			System.out.println(names.nextElement());
+			
+			// get the product id off of the request
+			int productId = Integer.parseInt(request.getParameter("ProductID"));
+			
+			// delete the product
+			_repository.doDeleteProduct(productId);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(500);
+		}
+		
 	}
 
 	private models.Product parseRequest(HttpServletRequest request) {
