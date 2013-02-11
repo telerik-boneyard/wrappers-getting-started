@@ -13,6 +13,10 @@ class HierarchicalDataSourceSchemaModel extends \Kendo\Data\DataSourceSchemaMode
         return $this->setProperty('hasChildren', $value);
     }
 
+    public function children($value){
+        return $this->setProperty('children', $value);
+    }
+
 //>> Properties
 //<< Properties
 }
