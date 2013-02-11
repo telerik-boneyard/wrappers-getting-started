@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?PHP
+  require_once 'lib/DataSourceResult.php';
+  require_once 'lib/Kendo/Autoload.php';
+?>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -10,3 +14,5 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
   </head>
   <body>
+
+    <?php include 'menu.php'; ?>

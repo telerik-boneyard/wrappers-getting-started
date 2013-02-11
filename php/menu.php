@@ -6,10 +6,10 @@
 			</span>
 			<ul class="nav">
 				<li>
-					<a href="">Employees</a>
+					<a href="/">Employees</a>
 				</li>
 				<li>
-					<a href="customers.php">Products</a>
+					<a href="products.php">Products</a>
 				</li>
 			</ul>
 		</div>
