@@ -55,9 +55,24 @@
   $unitsInStock->field('UnitsInStock')
     ->title('Units In Stock');
 
+
+  $edit = new \Kendo\UI\GridColumnCommandItem('edit');
+  $edit->name('edit');
+
+  $destroy = new \Kendo\UI\GridColumnCommandItem('destroy');
+  $destroy->name('destroy');
+
+  $commandColumn = new \Kendo\UI\GridColumn();
+  $commandColumn ->addCommandItem($edit)
+    ->addCommandItem($destroy);
+
+  $create = new \Kendo\UI\GridToolbarItem('create');
+
   $grid->addColumn($productName)
+    ->addToolbarItem($create)
     ->addColumn($unitPrice)
     ->addColumn($unitsInStock)
+    ->addColumn($commandColumn)
     ->dataSource($dataSource)
     ->sortable(true)
     ->filterable(true)
