@@ -76,8 +76,8 @@
     ->dataSource($dataSource)
     ->sortable(true)
     ->filterable(true)
-    ->pageable(true);
-
+    ->pageable(true)
+    ->editable("popup");
 ?>
 
 <div class="container">
