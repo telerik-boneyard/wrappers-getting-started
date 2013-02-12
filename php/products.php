@@ -22,9 +22,13 @@
   $unitsInStockField = new \Kendo\Data\DataSourceSchemaModelField('UnitsInStock');
   $unitsInStockField->type('number');
 
+  $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
+  $discontinuedField->type('boolean');
+
   $model->addField($productNameField)
     ->addField($unitPriceField)
-    ->addField($unitsInStockField);
+    ->addField($unitsInStockField)
+    ->addField($discontinuedField);
 
   $schema = new \Kendo\Data\DataSourceSchema();
   $schema->data('data')
@@ -55,6 +59,9 @@
   $unitsInStock->field('UnitsInStock')
     ->title('Units In Stock');
 
+  $discontinued = new \Kendo\UI\GridColumn();
+  $discontinued->field('Discontinued');
+
 
   $edit = new \Kendo\UI\GridColumnCommandItem('edit');
   $edit->name('edit');
@@ -70,8 +77,9 @@
 
   $grid->addColumn($productName)
     ->addToolbarItem($create)
-    ->addColumn($unitPrice)
     ->addColumn($unitsInStock)
+    ->addColumn($unitPrice)
+    ->addColumn($discontinued)
     ->addColumn($commandColumn)
     ->dataSource($dataSource)
     ->sortable(true)

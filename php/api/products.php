@@ -8,6 +8,14 @@
 
   $result = new DataSourceResult('sqlite:../data/sample.db');
 
-  $data = $result->read('Products', array('ProductName', 'UnitPrice', 'UnitsInStock'), $request);
+  $data = $result->read('Products', array(
+      'ProductName', 
+      'UnitPrice', 
+      'UnitsInStock',
+      'Discontinued',
+      'SupplierID',
+      'CategoryID'
+    ), 
+    $request);
   echo json_encode($data);
 ?>
