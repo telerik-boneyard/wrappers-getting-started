@@ -1,15 +1,33 @@
 <?php
   include 'header.php';
 
-  $transport = new \Kendo\Data\DataSourceTransport();
-
-  $read = new \Kendo\Data\DataSourceTransportRead();
-
-  $read->url('/api/products.php')
+  $create = new \Kendo\Data\DataSourceTransportRead();
+  $create->url('/api/products/create.php')
     ->contentType('application/json')
     ->type('POST');
 
-  $transport->read($read);
+  $read = new \Kendo\Data\DataSourceTransportRead();
+  $read->url('/api/products/read.php')
+    ->contentType('application/json')
+    ->type('GET');
+
+  $update = new \Kendo\Data\DataSourceTransportRead();
+  $update->url('/api/products/update.php')
+    ->contentType('application/json')
+    ->type('PUT');
+
+  $destroy = new \Kendo\Data\DataSourceTransportRead();
+  $destroy->url('/api/products/destroy.php')
+    ->contentType('application/json')
+    ->type('POST');
+
+  $transport = new \Kendo\Data\DataSourceTransport();
+  $transport
+    ->create($create)
+    ->read($read)
+    ->update($update)
+    ->destroy($destroy)
+    ->parameterMap('function(data) { return kendo.stringify(data); }');
 
   $model = new \Kendo\Data\DataSourceSchemaModel();
 
@@ -25,7 +43,8 @@
   $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
   $discontinuedField->type('boolean');
 
-  $model->addField($productNameField)
+  $model->id("ProductID")
+    ->addField($productNameField)
     ->addField($unitPriceField)
     ->addField($unitsInStockField)
     ->addField($discontinuedField);

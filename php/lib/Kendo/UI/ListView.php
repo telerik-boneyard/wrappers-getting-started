@@ -6,6 +6,50 @@ class ListView extends \Kendo\UI\Widget {
     protected function name() {
         return 'ListView';
     }
+
+    protected function createElement() {
+        $tagName = $this->getProperty('tagName');
+        if ($tagName == NULL) {
+            $tagName = 'div';
+        }
+
+        return new \Kendo\Html\Element($tagName);
+    }
+
+    public function html() {
+        $html = parent::html();
+
+        if ($this->getProperty('pageable')) {
+            $pager = new \Kendo\Html\Element('div');
+            $pager->attr('id', "{$this->id}_pager");
+
+
+            $html = "$html {$pager->outerHtml()}";
+        }
+
+        return $html;
+    }
+
+    public function properties() {
+        $properties = parent::properties();
+
+        //remove tagName from init script
+        unset($properties['tagName']);
+
+        //adjust pager settings
+        $pageable = $properties['pageable'];
+        if ($pageable) {
+            if (!is_array($pageable)) {
+                $pageable = array();
+            }
+
+            $pageable['pagerId'] = "{$this->id}_pager";
+            $properties['pageable'] = $pageable;
+        }
+
+        return $properties;
+    }
+
 //>> Properties
 
     /**
@@ -112,7 +156,7 @@ class ListView extends \Kendo\UI\Widget {
 
     /**
     * Indicates whether paging is enabled/disabled.
-    * @param boolean $value
+    * @param boolean|\Kendo\UI\ListViewPageable|array $value
     * @return \Kendo\UI\ListView
     */
     public function pageable($value) {
@@ -126,6 +170,20 @@ class ListView extends \Kendo\UI\Widget {
     */
     public function tagName($value) {
         return $this->setProperty('tagName', $value);
+    }
+
+    /**
+    * Sets the cancel event of the ListView.
+    * Raised when the user clicks the "cancel" button.
+    * @param string|\Kendo\JavaScriptFunction $value Can be a JavaScript function definition or name.
+    * @return \Kendo\UI\ListView
+    */
+    public function cancel($value) {
+        if (is_string($value)) {
+            $value = new \Kendo\JavaScriptFunction($value);
+        }
+
+        return $this->setProperty('cancel', $value);
     }
 
     /**
