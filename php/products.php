@@ -1,8 +1,6 @@
 <?php
   include 'header.php';
 
-  $transport = new \Kendo\Data\DataSourceTransport();
-
   $create = new \Kendo\Data\DataSourceTransportRead();
   $create->url('/api/products/create.php')
     ->contentType('application/json')
@@ -21,12 +19,15 @@
   $destroy = new \Kendo\Data\DataSourceTransportRead();
   $destroy->url('/api/products/destroy.php')
     ->contentType('application/json')
-    ->type('DESTROY');
+    ->type('POST');
 
-  $transport->create($create)
+  $transport = new \Kendo\Data\DataSourceTransport();
+  $transport
+    ->create($create)
     ->read($read)
     ->update($update)
-    ->destroy($destroy);
+    ->destroy($destroy)
+    ->parameterMap('function(data) { return kendo.stringify(data); }');
 
   $model = new \Kendo\Data\DataSourceSchemaModel();
 
