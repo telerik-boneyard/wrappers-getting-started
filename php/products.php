@@ -3,13 +3,30 @@
 
   $transport = new \Kendo\Data\DataSourceTransport();
 
-  $read = new \Kendo\Data\DataSourceTransportRead();
-
-  $read->url('/api/products.php')
+  $create = new \Kendo\Data\DataSourceTransportRead();
+  $create->url('/api/products/create.php')
     ->contentType('application/json')
     ->type('POST');
 
-  $transport->read($read);
+  $read = new \Kendo\Data\DataSourceTransportRead();
+  $read->url('/api/products/read.php')
+    ->contentType('application/json')
+    ->type('GET');
+
+  $update = new \Kendo\Data\DataSourceTransportRead();
+  $update->url('/api/products/update.php')
+    ->contentType('application/json')
+    ->type('PUT');
+
+  $destroy = new \Kendo\Data\DataSourceTransportRead();
+  $destroy->url('/api/products/destroy.php')
+    ->contentType('application/json')
+    ->type('DESTROY');
+
+  $transport->create($create)
+    ->read($read)
+    ->update($update)
+    ->destroy($destroy);
 
   $model = new \Kendo\Data\DataSourceSchemaModel();
 
@@ -22,9 +39,14 @@
   $unitsInStockField = new \Kendo\Data\DataSourceSchemaModelField('UnitsInStock');
   $unitsInStockField->type('number');
 
-  $model->addField($productNameField)
+  $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
+  $discontinuedField->type('boolean');
+
+  $model->id("ProductID")
+    ->addField($productNameField)
     ->addField($unitPriceField)
-    ->addField($unitsInStockField);
+    ->addField($unitsInStockField)
+    ->addField($discontinuedField);
 
   $schema = new \Kendo\Data\DataSourceSchema();
   $schema->data('data')
@@ -55,14 +77,33 @@
   $unitsInStock->field('UnitsInStock')
     ->title('Units In Stock');
 
+  $discontinued = new \Kendo\UI\GridColumn();
+  $discontinued->field('Discontinued');
+
+
+  $edit = new \Kendo\UI\GridColumnCommandItem('edit');
+  $edit->name('edit');
+
+  $destroy = new \Kendo\UI\GridColumnCommandItem('destroy');
+  $destroy->name('destroy');
+
+  $commandColumn = new \Kendo\UI\GridColumn();
+  $commandColumn ->addCommandItem($edit)
+    ->addCommandItem($destroy);
+
+  $create = new \Kendo\UI\GridToolbarItem('create');
+
   $grid->addColumn($productName)
-    ->addColumn($unitPrice)
+    ->addToolbarItem($create)
     ->addColumn($unitsInStock)
+    ->addColumn($unitPrice)
+    ->addColumn($discontinued)
+    ->addColumn($commandColumn)
     ->dataSource($dataSource)
     ->sortable(true)
     ->filterable(true)
-    ->pageable(true);
-
+    ->pageable(true)
+    ->editable("popup");
 ?>
 
 <div class="container">
