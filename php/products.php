@@ -9,7 +9,7 @@
   $read = new \Kendo\Data\DataSourceTransportRead();
   $read->url('/api/products/read.php')
     ->contentType('application/json')
-    ->type('GET');
+    ->type('POST');
 
   $update = new \Kendo\Data\DataSourceTransportRead();
   $update->url('/api/products/update.php')
@@ -43,11 +43,19 @@
   $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
   $discontinuedField->type('boolean');
 
+  $supplierNameField = new \Kendo\Data\DataSourceSchemaModelField("SupplierName");
+  $supplierNameField->type('string');
+
+  $categoryNameField = new \Kendo\Data\DataSourceSchemaModelField("CategoryName");
+  $categoryNameField->type('string');
+
   $model->id("ProductID")
     ->addField($productNameField)
     ->addField($unitPriceField)
     ->addField($unitsInStockField)
-    ->addField($discontinuedField);
+    ->addField($discontinuedField)
+    ->addField($supplierNameField)
+    ->addField($categoryNameField);
 
   $schema = new \Kendo\Data\DataSourceSchema();
   $schema->data('data')
@@ -69,6 +77,18 @@
   $productName->field('ProductName')
     ->title('Product Name');
 
+  $supplier = new \Kendo\UI\GridColumn();
+  $supplier->field('SupplierID')
+    ->title("Supplier")
+    ->editor('supplierEditor')
+    ->template("#: SupplierName #");
+
+  $category = new \Kendo\UI\GridColumn();
+  $category->field('CategoryID')
+    ->title("Category")
+    ->editor('categoryEditor')
+    ->template("#: CategoryName #");
+
   $unitPrice = new \Kendo\UI\GridColumn();
   $unitPrice->field('UnitPrice')
     ->format('{0:c}')
@@ -80,7 +100,6 @@
 
   $discontinued = new \Kendo\UI\GridColumn();
   $discontinued->field('Discontinued');
-
 
   $edit = new \Kendo\UI\GridColumnCommandItem('edit');
   $edit->name('edit');
@@ -94,15 +113,16 @@
 
   $create = new \Kendo\UI\GridToolbarItem('create');
 
-  $grid->addColumn($productName)
+  $grid
     ->addToolbarItem($create)
+    ->addColumn($productName)
+    ->addColumn($supplier)
+    ->addColumn($category)
     ->addColumn($unitsInStock)
     ->addColumn($unitPrice)
     ->addColumn($discontinued)
     ->addColumn($commandColumn)
     ->dataSource($dataSource)
-    ->sortable(true)
-    ->filterable(true)
     ->pageable(true)
     ->editable("popup");
 ?>
@@ -124,7 +144,7 @@
     .kendoDropDownList({
       dataSource: {
         transport: {
-          read: "api/categories"
+          read: "api/categories.php"
         }
       }
     });
@@ -136,7 +156,7 @@
     .kendoDropDownList({
       dataSource: {
         transport: {
-          read: "api/suppliers"
+          read: "api/suppliers.php"
         }
       }
     });

@@ -6,6 +6,6 @@
   $request = json_decode(file_get_contents('php://input'));
   $result = new DataSourceResult($database);
 
-  $result = $result->update('Products', $columns, $request, 'ProductID');
-  echo json_encode($result);
+  $result = $result->update("Products", $write_columns, $request, $productIdField);
+  echo json_encode($request);
 ?>
