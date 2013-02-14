@@ -4,10 +4,8 @@ public class Product {
 
 	private int ProductID;
 	private String ProductName;
-	private int SupplierID;
-	private String SupplierName;
-	private int CategoryID;
-	private String CategoryName;
+	private models.Supplier Supplier;
+	private models.Category Category;
 	private String QuantityPerUnit;
 	private float UnitPrice;
 	private int UnitsInStock;
@@ -24,18 +22,6 @@ public class Product {
 	}
 	public void setProductName(String productName) {
 		ProductName = productName;
-	}
-	public int getSupplierID() {
-		return SupplierID;
-	}
-	public void setSupplierID(int supplierID) {
-		SupplierID = supplierID;
-	}
-	public int getCategoryID() {
-		return CategoryID;
-	}
-	public void setCategoryID(int categoryID) {
-		CategoryID = categoryID;
 	}
 	public String getQuantityPerUnit() {
 		return QuantityPerUnit;
@@ -61,17 +47,17 @@ public class Product {
 	public void setDiscontinued(Boolean discontinued) {
 		Discontinued = discontinued;
 	}
-	public String getSupplierName() {
-		return SupplierName;
+	public models.Supplier getSupplier() {
+		return Supplier;
 	}
-	public void setSupplierName(String supplierName) {
-		SupplierName = supplierName;
+	public void setSupplier(models.Supplier supplier) {
+		Supplier = supplier;
 	}
-	public String getCategoryName() {
-		return CategoryName;
+	public models.Category getCategory() {
+		return Category;
 	}
-	public void setCategoryName(String categoryName) {
-		CategoryName = categoryName;
+	public void setCategory(models.Category category) {
+		Category = category;
 	}
 	
 }

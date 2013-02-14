@@ -1,9 +1,6 @@
 package api;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -72,53 +69,36 @@ public class Products extends HttpServlet {
 			
 	    	int productId = request.getParameter("ProductID") == "" ? 0 : Integer.parseInt(request.getParameter("ProductID"));
 	
+	    	// get the type of operation
+	    	String type = request.getQueryString().trim();
+	    	
 	    	// parse the rest of the request into an employee object
 	    	models.Product product = parseRequest(request);
-	
-	    	// if there is a product id, this an update
-	    	if (productId > 0) {
-	
-		    	// add the product id onto the model
+	    	
+	    	if (type.equals("update")) {
+	    		// add the product id onto the model and update the product
 		    	product.setProductID(productId);
-		
-		    	// update the product
 		    	product = _repository.doUpdateProduct(product);
 	    	
 		    	response.getWriter().print(_gson.toJson(product));
 	    	}
-	    	// otherwise it is a create
-	    	else {
-	    		// 	create the product
+		    if (type.equals("create")) {
+		    	//create the product
 	    		productId = _repository.doCreateProduct(product);
 	    		response.getWriter().print(_gson.toJson(productId));
-	    	}
+		    }
+		    if (type.equals("delete")) {
+		    	// delete the product
+		    	System.out.println(type);
+		    	_repository.doDeleteProduct(productId);
+		    }
+	    	
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(500);
 		}
 
-	}
-	
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		try {
-			
-			Enumeration<String> names = request.getParameterNames();
-			
-			System.out.println(names.nextElement());
-			
-			// get the product id off of the request
-			int productId = Integer.parseInt(request.getParameter("ProductID"));
-			
-			// delete the product
-			_repository.doDeleteProduct(productId);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(500);
-		}
-		
 	}
 
 	private models.Product parseRequest(HttpServletRequest request) {
@@ -128,8 +108,10 @@ public class Products extends HttpServlet {
 		// VALIDATION SHOULD BE DONE HERE AS WELL
 		
 		// parse the rest of the information off of the request
-		product.setSupplierID(Integer.parseInt(request.getParameter("SupplierID")));
-		product.setCategoryID(Integer.parseInt(request.getParameter("CategoryID")));
+		product.setSupplier(new models.Supplier(Integer.parseInt(request.getParameter("Supplier[SupplierID]")), 
+				request.getParameter("Supplier[SupplierName]")));
+		product.setCategory(new models.Category(Integer.parseInt(request.getParameter("Category[CategoryID]")), 
+				request.getParameter("Category[Categoryname]")));
 		product.setUnitPrice(Float.parseFloat(request.getParameter("UnitPrice")));
 		product.setUnitsInStock(Integer.parseInt(request.getParameter("UnitsInStock")));
 		product.setDiscontinued(Boolean.parseBoolean(request.getParameter("Discontinued")));

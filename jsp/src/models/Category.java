@@ -18,4 +18,11 @@ public class Category {
 		CategoryName = categoryName;
 	}
 	
+	public Category() { }
+	
+	public Category(int categoryID, String categoryName) {
+		setCategoryID(categoryID);
+		setCategoryName(categoryName);
+	}
+	
 }

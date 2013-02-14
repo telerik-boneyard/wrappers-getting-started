@@ -1,5 +1,6 @@
 <%@taglib prefix="kendo" uri="http://www.kendoui.com/jsp/tags"%>
 <%@taglib prefix="shared" tagdir="/WEB-INF/tags"%>
+<%@page import="models.*"%>
 
 <shared:header></shared:header>
 
@@ -23,9 +24,9 @@
 					<kendo:dataSource serverPaging="true" pageSize="10">
 						<kendo:dataSource-transport>
 							<kendo:dataSource-transport-read url="api/products"></kendo:dataSource-transport-read>
-							<kendo:dataSource-transport-create url="api/products" type="POST"></kendo:dataSource-transport-create>
-							<kendo:dataSource-transport-update url="api/products" type="POST"></kendo:dataSource-transport-update>
-							<kendo:dataSource-transport-destroy url="api/products" type="DELETE"></kendo:dataSource-transport-destroy>
+							<kendo:dataSource-transport-create url="api/products?create" type="POST"></kendo:dataSource-transport-create>
+							<kendo:dataSource-transport-update url="api/products?update" type="POST"></kendo:dataSource-transport-update>
+							<kendo:dataSource-transport-destroy url="api/products?delete" type="POST"></kendo:dataSource-transport-destroy>
 						</kendo:dataSource-transport>
 						<kendo:dataSource-schema data="Data" total="Total">
 							<kendo:dataSource-schema-model id="ProductID">
@@ -33,8 +34,8 @@
 									<kendo:dataSource-schema-model-field name="ProductName">
 										<kendo:dataSource-schema-model-field-validation required="true"/>
 									</kendo:dataSource-schema-model-field>
-									<kendo:dataSource-schema-model-field name="SupplierName"></kendo:dataSource-schema-model-field>
-									<kendo:dataSource-schema-model-field name="CategoryName"></kendo:dataSource-schema-model-field>
+									<kendo:dataSource-schema-model-field name="Supplier" defaultValue="<%= new Supplier() %>"></kendo:dataSource-schema-model-field>
+									<kendo:dataSource-schema-model-field name="Category" defaultValue="<%= new Category() %>"></kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="UnitPrice" type="number"></kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="UnitsInStock" type="number"></kendo:dataSource-schema-model-field>
 									<kendo:dataSource-schema-model-field name="Discontinued" type="boolean"></kendo:dataSource-schema-model-field>
@@ -44,8 +45,8 @@
 					</kendo:dataSource>
 					<kendo:grid-columns>
 						<kendo:grid-column field="ProductName" title="Product"></kendo:grid-column>
-						<kendo:grid-column field="SupplierID" title="Supplier" editor="supplierEditor" template="#: SupplierName #"></kendo:grid-column>
-						<kendo:grid-column field="CategoryID" title="Category" width="150px" editor="categoryEditor" template="#: CategoryName #"></kendo:grid-column>
+						<kendo:grid-column field="Supplier" title="Supplier" editor="supplierEditor" template="#: Supplier.SupplierName #"></kendo:grid-column>
+						<kendo:grid-column field="Category" title="Category" width="150px" editor="categoryEditor" template="#: Category.CategoryName #"></kendo:grid-column>
 						<kendo:grid-column field="UnitPrice" title="Price" format="{0:c}" width="75px"></kendo:grid-column>
 						<kendo:grid-column field="UnitsInStock" title="# In Stock" width="80px"></kendo:grid-column>
 						<kendo:grid-column field="Discontinued" title="Discontinued" width="100px"></kendo:grid-column>

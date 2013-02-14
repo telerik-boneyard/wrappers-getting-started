@@ -18,4 +18,11 @@ public class Supplier {
 		SupplierName = supplierName;
 	}
 	
+	public Supplier() { }
+	
+	public Supplier(int supplierID, String supplierName) {
+		setSupplierID(supplierID);
+		setSupplierName(supplierName);
+	}
+	
 }

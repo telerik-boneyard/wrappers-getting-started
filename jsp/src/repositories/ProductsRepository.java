@@ -71,10 +71,8 @@ public class ProductsRepository extends RepositoryBase {
 				
 				product.setProductID(rs.getInt("ProductID"));
 				product.setProductName(rs.getString("ProductName"));
-				product.setSupplierID(rs.getInt("SupplierID"));
-				product.setSupplierName(rs.getString("CompanyName"));
-				product.setCategoryID(rs.getInt("CategoryID"));
-				product.setCategoryName(rs.getString("CategoryName"));
+				product.setSupplier(new models.Supplier(rs.getInt("SupplierID"), rs.getString("CompanyName")));
+				product.setCategory(new models.Category(rs.getInt("CategoryID"),rs.getString("CategoryName")));
 				product.setUnitPrice(rs.getFloat("UnitPrice"));
 				product.setUnitsInStock(rs.getInt("UnitsInStock"));
 				product.setDiscontinued(rs.getBoolean("Discontinued"));
@@ -105,8 +103,8 @@ public class ProductsRepository extends RepositoryBase {
 
 			stmt = super.connection.prepareStatement(sql);
 
-			stmt.setInt(1, product.getSupplierID());
-			stmt.setInt(2, product.getCategoryID());
+			stmt.setInt(1, product.getSupplier().getSupplierID());
+			stmt.setInt(2, product.getCategory().getCategoryID());
 			stmt.setString(3, product.getProductName());
 			stmt.setFloat(4, product.getUnitPrice());
 			stmt.setInt(5, product.getUnitsInStock());
@@ -139,9 +137,9 @@ public class ProductsRepository extends RepositoryBase {
 						 "VALUES (?, ?, ?, ?, ?, ?)";
 
 			stmt = super.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-			stmt.setInt(1, product.getSupplierID());
-			stmt.setInt(2, product.getCategoryID());
+			
+			stmt.setInt(1, product.getSupplier().getSupplierID());
+			stmt.setInt(2, product.getCategory().getCategoryID());
 			stmt.setString(3, product.getProductName());
 			stmt.setFloat(4, product.getUnitPrice());
 			stmt.setInt(5, product.getUnitsInStock());
@@ -173,6 +171,8 @@ public class ProductsRepository extends RepositoryBase {
 		PreparedStatement stmt = null;
 		
 		try {
+			
+			System.out.println(productId);
 			
 			String sql = "DELETE FROM Products WHERE ProductID = ?";
 			
