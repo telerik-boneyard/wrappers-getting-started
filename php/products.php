@@ -43,6 +43,9 @@
   $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
   $discontinuedField->type('boolean');
 
+  $supplierIDField = new \Kendo\Data\DataSourceSchemaModelField("SupplierID");
+  $supplierIDField->type('number');
+
   $supplierNameField = new \Kendo\Data\DataSourceSchemaModelField("SupplierName");
   $supplierNameField->type('string');
 
@@ -54,6 +57,7 @@
     ->addField($unitPriceField)
     ->addField($unitsInStockField)
     ->addField($discontinuedField)
+    ->addField($supplierIDField)
     ->addField($supplierNameField)
     ->addField($categoryNameField);
 
