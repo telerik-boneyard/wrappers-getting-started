@@ -27,4 +27,19 @@
     'p.CategoryID',
     '(select c.CategoryName From Categories c Where c.CategoryID = p.CategoryID) as CategoryName',
   );
+
+  function createSupplier($supplierID, $supplierName){
+    $supplier = new stdClass;
+    $supplier->SupplierID = $supplierID;
+    $supplier->SupplierName = $supplierName;
+    return $supplier;
+  }
+
+  function createCategory($categoryID, $categoryName){
+    $category = new stdClass;
+    $category->CategoryID = $categoryID;
+    $category->CategoryName = $categoryName;
+    return $category;
+  }
+
 ?>

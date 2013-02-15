@@ -43,23 +43,19 @@
   $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
   $discontinuedField->type('boolean');
 
-  $supplierIDField = new \Kendo\Data\DataSourceSchemaModelField("SupplierID");
-  $supplierIDField->type('number');
+  $supplierField = new \Kendo\Data\DataSourceSchemaModelField("Supplier");
+  $supplierField->type('object');
 
-  $supplierNameField = new \Kendo\Data\DataSourceSchemaModelField("SupplierName");
-  $supplierNameField->type('string');
-
-  $categoryNameField = new \Kendo\Data\DataSourceSchemaModelField("CategoryName");
-  $categoryNameField->type('string');
+  $categoryField = new \Kendo\Data\DataSourceSchemaModelField("Category");
+  $categoryField->type('object');
 
   $model->id("ProductID")
     ->addField($productNameField)
     ->addField($unitPriceField)
     ->addField($unitsInStockField)
     ->addField($discontinuedField)
-    ->addField($supplierIDField)
-    ->addField($supplierNameField)
-    ->addField($categoryNameField);
+    ->addField($supplierField)
+    ->addField($categoryField);
 
   $schema = new \Kendo\Data\DataSourceSchema();
   $schema->data('data')
@@ -82,16 +78,16 @@
     ->title('Product Name');
 
   $supplier = new \Kendo\UI\GridColumn();
-  $supplier->field('SupplierID')
+  $supplier->field('Supplier')
     ->title("Supplier")
     ->editor('supplierEditor')
-    ->template("#: SupplierName #");
+    ->template("#: Supplier.SupplierName #");
 
   $category = new \Kendo\UI\GridColumn();
-  $category->field('CategoryID')
+  $category->field('Category')
     ->title("Category")
     ->editor('categoryEditor')
-    ->template("#: CategoryName #");
+    ->template("#: Category.CategoryName #");
 
   $unitPrice = new \Kendo\UI\GridColumn();
   $unitPrice->field('UnitPrice')

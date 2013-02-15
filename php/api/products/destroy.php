@@ -7,5 +7,5 @@
   $result = new DataSourceResult($database);
 
   $result = $result->destroy("Products", $request, $productIdField);
-  echo json_encode($request);
+  echo json_encode($result);
 ?>
