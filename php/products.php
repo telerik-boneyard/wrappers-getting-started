@@ -44,10 +44,10 @@
   $discontinuedField->type('boolean');
 
   $supplierField = new \Kendo\Data\DataSourceSchemaModelField("Supplier");
-  $supplierField->type('object');
+  $supplierField->defaultValue(new stdClass);
 
   $categoryField = new \Kendo\Data\DataSourceSchemaModelField("Category");
-  $categoryField->type('object');
+  $categoryField->defaultValue(new stdClass);
 
   $model->id("ProductID")
     ->addField($productNameField)
