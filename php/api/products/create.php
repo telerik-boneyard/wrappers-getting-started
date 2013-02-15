@@ -6,6 +6,7 @@
   $request = json_decode(file_get_contents('php://input'));
   $result = new DataSourceResult($database);
 
+  // flatten the request so that the SupplierID/CategoryID get set
   $request->SupplierID = $request->Supplier->SupplierID;
   $request->CategoryID = $request->Category->CategoryID;
 
