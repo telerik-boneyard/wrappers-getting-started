@@ -142,6 +142,7 @@
     $("<input data-text-field='CategoryName' data-value-field='CategoryID' data-bind='value:" + options.field + "' />")
     .appendTo(container)
     .kendoDropDownList({
+      index: -1,
       dataSource: {
         transport: {
           read: "api/categories.php"
@@ -154,6 +155,7 @@
     $("<input data-text-field='SupplierName' data-value-field='SupplierID' data-bind='value:" + options.field + "' />")
     .appendTo(container)
     .kendoDropDownList({
+      index: -1,
       dataSource: {
         transport: {
           read: "api/suppliers.php"

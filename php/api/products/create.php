@@ -7,8 +7,10 @@
   $result = new DataSourceResult($database);
 
   // flatten the request so that the SupplierID/CategoryID get set
-  $request->SupplierID = $request->Supplier->SupplierID;
-  $request->CategoryID = $request->Category->CategoryID;
+  $supId = $request->Supplier->SupplierID;
+  $catId = $request->Category->CategoryID;
+  $request->SupplierID = $supId;
+  $request->CategoryID = $catId;
 
   $result = $result->create("Products", $write_columns, $request, $productIdField);
   echo json_encode($request);
