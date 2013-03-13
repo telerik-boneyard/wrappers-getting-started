@@ -11,7 +11,6 @@
     'ProductName', 
     'UnitPrice', 
     'UnitsInStock', 
-    'Discontinued',
     'SupplierID',
     'CategoryID',
   );
@@ -21,7 +20,6 @@
     'p.ProductName', 
     'p.UnitPrice', 
     'p.UnitsInStock', 
-    'p.Discontinued',
     'p.SupplierID',
     '(select s.CompanyName From Suppliers s Where s.SupplierID = p.SupplierID) as SupplierName',
     'p.CategoryID',

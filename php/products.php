@@ -1,140 +1,137 @@
 <?php
-  include 'header.php';
+require_once 'lib/Kendo/Autoload.php';
+include 'header.php';
 
-  $create = new \Kendo\Data\DataSourceTransportRead();
-  $create->url('/api/products/create.php')
-    ->contentType('application/json')
-    ->type('POST');
+// --------- Kendo UI DataSource Transport -------
 
-  $read = new \Kendo\Data\DataSourceTransportRead();
-  $read->url('/api/products/read.php')
-    ->contentType('application/json')
-    ->type('POST');
+$create = new \Kendo\Data\DataSourceTransportCreate();
+$create->url('/api/products/create.php')
+  ->contentType('application/json')
+  ->type('POST');
 
-  $update = new \Kendo\Data\DataSourceTransportRead();
-  $update->url('/api/products/update.php')
-    ->contentType('application/json')
-    ->type('PUT');
+$read = new \Kendo\Data\DataSourceTransportRead();
+$read->url('/api/products/read.php')
+  ->contentType('application/json')
+  ->type('POST');
 
-  $destroy = new \Kendo\Data\DataSourceTransportRead();
-  $destroy->url('/api/products/destroy.php')
-    ->contentType('application/json')
-    ->type('POST');
+$update = new \Kendo\Data\DataSourceTransportUpdate();
+$update->url('/api/products/update.php')
+  ->contentType('application/json')
+  ->type('PUT');
 
-  $transport = new \Kendo\Data\DataSourceTransport();
-  $transport
-    ->create($create)
-    ->read($read)
-    ->update($update)
-    ->destroy($destroy)
-    ->parameterMap('function(data) { return kendo.stringify(data); }');
+$destroy = new \Kendo\Data\DataSourceTransportDestroy();
+$destroy->url('/api/products/destroy.php')
+  ->contentType('application/json')
+  ->type('POST');
 
-  $model = new \Kendo\Data\DataSourceSchemaModel();
+$transport = new \Kendo\Data\DataSourceTransport();
+$transport
+  ->create($create)
+  ->read($read)
+  ->update($update)
+  ->destroy($destroy)
+  ->parameterMap('function(data) { return kendo.stringify(data); }');
 
-  $productNameField = new \Kendo\Data\DataSourceSchemaModelField('ProductName');
-  $productNameField->type('string');
+// --------- Kendo UI DataSource Schema -------
 
-  $unitPriceField = new \Kendo\Data\DataSourceSchemaModelField('UnitPrice');
-  $unitPriceField->type('number');
+$model = new \Kendo\Data\DataSourceSchemaModel();
 
-  $unitsInStockField = new \Kendo\Data\DataSourceSchemaModelField('UnitsInStock');
-  $unitsInStockField->type('number');
+$productNameField = new \Kendo\Data\DataSourceSchemaModelField('ProductName');
+$productNameField->type('string');
 
-  $discontinuedField = new \Kendo\Data\DataSourceSchemaModelField('Discontinued');
-  $discontinuedField->type('boolean');
+$unitPriceField = new \Kendo\Data\DataSourceSchemaModelField('UnitPrice');
+$unitPriceField->type('number');
 
-  $supplierField = new \Kendo\Data\DataSourceSchemaModelField("Supplier");
-  $supplierField->defaultValue(new stdClass);
+$unitsInStockField = new \Kendo\Data\DataSourceSchemaModelField('UnitsInStock');
+$unitsInStockField->type('number');
 
-  $categoryField = new \Kendo\Data\DataSourceSchemaModelField("Category");
-  $categoryField->defaultValue(new stdClass);
+$supplierField = new \Kendo\Data\DataSourceSchemaModelField("Supplier");
+$supplierField->defaultValue(new stdClass);
 
-  $model->id("ProductID")
-    ->addField($productNameField)
-    ->addField($unitPriceField)
-    ->addField($unitsInStockField)
-    ->addField($discontinuedField)
-    ->addField($supplierField)
-    ->addField($categoryField);
+$categoryField = new \Kendo\Data\DataSourceSchemaModelField("Category");
+$categoryField->defaultValue(new stdClass);
 
-  $schema = new \Kendo\Data\DataSourceSchema();
-  $schema->data('data')
-    ->model($model)
-    ->total('total');
+$model->id("ProductID")
+  ->addField($productNameField)
+  ->addField($unitPriceField)
+  ->addField($unitsInStockField)
+  ->addField($supplierField)
+  ->addField($categoryField);
 
-  $dataSource = new \Kendo\Data\DataSource();
+$schema = new \Kendo\Data\DataSourceSchema();
+$schema->data('data')
+  ->model($model)
+  ->total('total');
 
-  $dataSource->transport($transport)
-    ->pageSize(10)
-    ->schema($schema)
-    ->serverFiltering(true)
-    ->serverSorting(true)
-    ->serverPaging(true);
+// --------- Kendo UI DataSource -------
 
-  $grid = new \Kendo\UI\Grid('grid');
+$dataSource = new \Kendo\Data\DataSource();
 
-  $productName = new \Kendo\UI\GridColumn();
-  $productName->field('ProductName')
-    ->title('Product Name');
+$dataSource->transport($transport)
+  ->pageSize(5)
+  ->schema($schema)
+  ->serverPaging(true);
 
-  $supplier = new \Kendo\UI\GridColumn();
-  $supplier->field('Supplier')
-    ->title("Supplier")
-    ->editor('supplierEditor')
-    ->template("#: Supplier.SupplierName #");
+// --------- Kendo UI Grid -------
 
-  $category = new \Kendo\UI\GridColumn();
-  $category->field('Category')
-    ->title("Category")
-    ->editor('categoryEditor')
-    ->template("#: Category.CategoryName #");
+$grid = new \Kendo\UI\Grid('grid');
 
-  $unitPrice = new \Kendo\UI\GridColumn();
-  $unitPrice->field('UnitPrice')
-    ->format('{0:c}')
-    ->title('Unit Price');
+$productName = new \Kendo\UI\GridColumn();
+$productName->field('ProductName')
+  ->title('Product Name');
 
-  $unitsInStock = new \Kendo\UI\GridColumn();
-  $unitsInStock->field('UnitsInStock')
-    ->title('Units In Stock');
+$supplier = new \Kendo\UI\GridColumn();
+$supplier->field('Supplier')
+  ->title("Supplier")
+  ->editor('supplierEditor')
+  ->template("#: Supplier.SupplierName #");
 
-  $discontinued = new \Kendo\UI\GridColumn();
-  $discontinued->field('Discontinued');
+$category = new \Kendo\UI\GridColumn();
+$category->field('Category')
+  ->title("Category")
+  ->editor('categoryEditor')
+  ->template("#: Category.CategoryName #");
 
-  $edit = new \Kendo\UI\GridColumnCommandItem('edit');
-  $edit->name('edit');
+$unitPrice = new \Kendo\UI\GridColumn();
+$unitPrice->field('UnitPrice')
+  ->format('{0:c}')
+  ->title('Price');
 
-  $destroy = new \Kendo\UI\GridColumnCommandItem('destroy');
-  $destroy->name('destroy');
+$unitsInStock = new \Kendo\UI\GridColumn();
+$unitsInStock->field('UnitsInStock')
+  ->title('Stock');
 
-  $commandColumn = new \Kendo\UI\GridColumn();
-  $commandColumn ->addCommandItem($edit)
-    ->addCommandItem($destroy);
+$edit = new \Kendo\UI\GridColumnCommandItem('edit');
+$edit->name('edit');
 
-  $create = new \Kendo\UI\GridToolbarItem('create');
+$destroy = new \Kendo\UI\GridColumnCommandItem('destroy');
+$destroy->name('destroy');
 
-  $grid
-    ->addToolbarItem($create)
-    ->addColumn($productName)
-    ->addColumn($supplier)
-    ->addColumn($category)
-    ->addColumn($unitsInStock)
-    ->addColumn($unitPrice)
-    ->addColumn($discontinued)
-    ->addColumn($commandColumn)
-    ->dataSource($dataSource)
-    ->pageable(true)
-    ->editable("popup");
+$commandColumn = new \Kendo\UI\GridColumn();
+$commandColumn ->addCommandItem($edit)
+  ->addCommandItem($destroy);
+
+$create = new \Kendo\UI\GridToolbarItem('create');
+
+$grid
+  ->addToolbarItem($create)
+  ->addColumn($productName)
+  ->addColumn($supplier)
+  ->addColumn($category)
+  ->addColumn($unitsInStock)
+  ->addColumn($unitPrice)
+  ->addColumn($commandColumn)
+  ->dataSource($dataSource)
+  ->pageable(true)
+  ->editable("popup");
 ?>
 
-<div class="container">
-  <div class="row">
-    <div class="span12">
-      <h2>Products</h2>
-      <?= $grid->render(); ?>
-    </div>
-  </div>
-</div>
+<h2>Products</h2>
+<p>
+A complete CRUD (Create, Read, Update, Delete) demonstration of
+the Kendo UI Grid, with custom column templates and pop up editor.
+</p>
+<?= $grid->render(); ?>
 
 <script>
 

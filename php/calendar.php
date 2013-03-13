@@ -1,18 +1,16 @@
 <?PHP
+require_once 'lib/Kendo/AutoLoad.php';
 include 'header.php';
 
-$calendar = new \Kendo\UI\Calendar('myCal');
+$calendar = new \Kendo\UI\Calendar('calendar');
 ?>
 
-<div class="container">
-  <div class="row">
-    <div class="span12">
-      <h2>My Calendar</h2>
-      <?= $calendar->render(); ?>
-    </div>
-  </div>
-</div>
+<h2>Calendar Control</h2>
+<p>
+An example of using the Kendo UI Calendar control.
+</p>
+<?= $calendar->render(); ?>
 
-<?php
-  include 'footer.php';
+<?PHP
+include 'footer.php';
 ?>
