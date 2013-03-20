@@ -51,6 +51,24 @@ class StockChartSeriesItem extends \Kendo\SerializableObject {
     }
 
     /**
+    * The data field containing the current value.** Available for bullet and verticalBullet series. **
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\StockChartSeriesItem
+    */
+    public function currentField($value) {
+        return $this->setProperty('currentField', $value);
+    }
+
+    /**
+    * The data field containing the target value.** Available for bullet and verticalBullet series. **
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\StockChartSeriesItem
+    */
+    public function targetField($value) {
+        return $this->setProperty('targetField', $value);
+    }
+
+    /**
     * Sets the groupNameTemplate option of the StockChartSeriesItem.
     * Name template for auto-generated series when binding to grouped data.Template variables:
     * @param string $value The id of the element which represents the kendo template.
@@ -82,7 +100,7 @@ class StockChartSeriesItem extends \Kendo\SerializableObject {
     }
 
     /**
-    * Configures the appearance of highlighted points.** Applicable to candlestick and ohlc series. **
+    * Configures the appearance of highlighted points.
     * @param \Kendo\Dataviz\UI\StockChartSeriesItemHighlight|array $value
     * @return \Kendo\Dataviz\UI\StockChartSeriesItem
     */
@@ -218,6 +236,15 @@ The function return value is displayed instead of the individual points.
     }
 
     /**
+    * Color to use for bars with negative values.** Applicable only to column series. **The plot stops before the missing point and continues after it.
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\StockChartSeriesItem
+    */
+    public function negativeColor($value) {
+        return $this->setProperty('negativeColor', $value);
+    }
+
+    /**
     * The series opacity.
     * @param float $value
     * @return \Kendo\Dataviz\UI\StockChartSeriesItem
@@ -279,6 +306,15 @@ Available for column series.
     */
     public function width($value) {
         return $this->setProperty('width', $value);
+    }
+
+    /**
+    * The target of the bullet chart.
+    * @param \Kendo\Dataviz\UI\StockChartSeriesItemTarget|array $value
+    * @return \Kendo\Dataviz\UI\StockChartSeriesItem
+    */
+    public function target($value) {
+        return $this->setProperty('target', $value);
     }
 
 //<< Properties

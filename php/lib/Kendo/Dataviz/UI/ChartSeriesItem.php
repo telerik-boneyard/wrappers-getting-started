@@ -100,7 +100,7 @@ class ChartSeriesItem extends \Kendo\SerializableObject {
     }
 
     /**
-    * Configures the appearance of highlighted points.** Applicable to bubble, pie, candlestick and ohlc series. **
+    * Configures the appearance of highlighted points.
     * @param \Kendo\Dataviz\UI\ChartSeriesItemHighlight|array $value
     * @return \Kendo\Dataviz\UI\ChartSeriesItem
     */
@@ -281,6 +281,15 @@ The function return value is displayed instead of the individual points.
     }
 
     /**
+    * Color to use for bars with negative values.** Applicable only to bar and column series. **
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\ChartSeriesItem
+    */
+    public function negativeColor($value) {
+        return $this->setProperty('negativeColor', $value);
+    }
+
+    /**
     * The settings for negative values.** Applicable only to bubble series. **
     * @param \Kendo\Dataviz\UI\ChartSeriesItemNegativeValues|array $value
     * @return \Kendo\Dataviz\UI\ChartSeriesItem
@@ -391,7 +400,7 @@ If not specified, the available space is split evenly between the series.Availab
     }
 
     /**
-    * The line width.** Available for area, line and scatterLine series **
+    * The line width.** Available for line and scatterLine series **
     * @param float $value
     * @return \Kendo\Dataviz\UI\ChartSeriesItem
     */
@@ -433,6 +442,33 @@ If not specified, the available space is split evenly between the series.Availab
     */
     public function yField($value) {
         return $this->setProperty('yField', $value);
+    }
+
+    /**
+    * The data field containing the current value.** Available for bullet and verticalBullet series. **
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\ChartSeriesItem
+    */
+    public function currentField($value) {
+        return $this->setProperty('currentField', $value);
+    }
+
+    /**
+    * The data field containing the target value.** Available for bullet and verticalBullet series. **
+    * @param string $value
+    * @return \Kendo\Dataviz\UI\ChartSeriesItem
+    */
+    public function targetField($value) {
+        return $this->setProperty('targetField', $value);
+    }
+
+    /**
+    * The target of the bullet chart.
+    * @param \Kendo\Dataviz\UI\ChartSeriesItemTarget|array $value
+    * @return \Kendo\Dataviz\UI\ChartSeriesItem
+    */
+    public function target($value) {
+        return $this->setProperty('target', $value);
     }
 
 //<< Properties

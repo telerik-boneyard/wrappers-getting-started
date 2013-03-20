@@ -13,5 +13,8 @@
   $request->CategoryID = $catId;
 
   $result = $result->create("Products", $write_columns, $request, $productIdField);
-  echo json_encode($request);
+
+  $data = new stdClass;
+  $data->data = $request;
+  echo json_encode($data);
 ?>

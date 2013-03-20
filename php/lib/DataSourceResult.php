@@ -29,8 +29,8 @@ class DataSourceResult {
         'sum' => 'SUM'
     );
 
-    function __construct($dsn) {
-        $this->db = new PDO($dsn);
+    function __construct($dsn, $username=null, $password=null, $driver_options=null) {
+        $this->db = new PDO($dsn, $username, $password, $driver_options);
     }
 
     private function total($tableName, $properties, $request) {
@@ -44,7 +44,8 @@ class DataSourceResult {
 
         $statement->execute();
 
-        return (int)($statement->fetch(PDO::FETCH_NUM)[0]);
+        $total = $statement->fetch(PDO::FETCH_NUM);
+        return (int)($total[0]);
     }
 
     private function page() {
@@ -482,8 +483,8 @@ class DataSourceResult {
         }
 
         if (isset($request->skip) && isset($request->take)) {
-            $statement->bindValue(':skip', (int)$request->skip);
-            $statement->bindValue(':take', (int)$request->take);
+            $statement->bindValue(':skip', (int)$request->skip, PDO::PARAM_INT);
+            $statement->bindValue(':take', (int)$request->take, PDO::PARAM_INT);
         }
 
         $statement->execute();
