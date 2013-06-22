@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h1>Employees</h1>
+
+@Html.Kendo().TreeView().Name("employees").DataSource(dataSource => dataSource
+    .Read(read => read.Action("Index", "Employees")
+)).DataTextField("Name")        

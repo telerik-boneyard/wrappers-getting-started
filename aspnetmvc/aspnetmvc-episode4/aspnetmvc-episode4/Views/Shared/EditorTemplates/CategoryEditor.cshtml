@@ -1,0 +1,10 @@
+﻿@model aspnetmvc_episode4.Models.Category
+
+@(Html.Kendo().DropDownList().Name("Category")
+    .DataTextField("Name")
+    .DataValueField("Id")
+    .DataSource(d => d
+        .Read(r => r.Action("Index", "Categories"))
+    )
+)
+

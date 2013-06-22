@@ -1,0 +1,26 @@
+﻿@using aspnetmvc_episode3.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Products</h1>
+
+@(Html.Kendo().Grid<Product>().Name("Products").Columns(c => {
+    c.Bound(p => p.Name);
+    c.Bound(p => p.Supplier.Name).Title("Supplier");
+    c.Bound(p => p.Category.Name).Title("Category");
+    c.Bound(p => p.UnitPrice).Format("{0:c}");
+    c.Bound(p => p.UnitsInStock);
+    c.Bound(p => p.Discontinued);
+    })
+    .DataSource(d => d
+        .Ajax()
+        .Read(r => r.Action("Get", "Products"))
+        .PageSize(5)
+    )
+    .Pageable()
+    .Groupable()
+    .Sortable()
+    .Filterable()
+)

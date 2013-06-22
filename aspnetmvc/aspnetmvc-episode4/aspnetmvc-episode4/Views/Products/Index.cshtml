@@ -1,0 +1,40 @@
+﻿@using aspnetmvc_episode4.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Products</h1>
+
+@(Html.Kendo().Grid<Product>().Name("Products").Columns(c => {
+        c.Bound(p => p.Name);
+        c.Bound(p => p.Supplier).ClientTemplate("#: Supplier.Name #").Title("Supplier");
+        c.Bound(p => p.Category).ClientTemplate("#: Category.Name #").Title("Category");
+        c.Bound(p => p.UnitPrice).Format("{0:c}").Title("Price");
+        c.Bound(p => p.UnitsInStock).Width(75).Title("# In Stock");
+        c.Bound(p => p.Discontinued).Width(75);
+        c.Command(command => { command.Edit(); command.Destroy(); }).Width(180);
+    })
+    .DataSource(d => d
+        .Ajax()
+        .Read(r => r.Action("Get", "Products"))
+        .Update(u => u.Action("Update", "Products"))
+        .Destroy(x => x.Action("Delete", "Products"))
+        .Create(c => c.Action("Create", "Products"))
+        .PageSize(5)
+        .Model(m =>
+        { 
+            m.Id(p => p.Id);
+            m.Field(p => p.Supplier).DefaultValue(
+                ViewData["defaultSupplier"] as aspnetmvc_episode4.Models.Supplier);
+            m.Field(p => p.Category).DefaultValue(
+                ViewData["defaultCategory"] as aspnetmvc_episode4.Models.Category);
+        })
+    )
+    .Pageable()
+    .Groupable()
+    .Sortable()
+    .Filterable()
+    .Editable(e => e.Mode(GridEditMode.InLine))
+    .ToolBar(t => t.Create())
+)  

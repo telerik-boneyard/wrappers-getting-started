@@ -1,0 +1,24 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "TreeView";
+}
+
+@section featured {
+    <div class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>Kendo UI MVC Wrappers</h1>
+            </hgroup>
+        </div>
+    </div>
+}
+
+<h3></h3>
+<br />
+
+<h3>Things</h3>
+<br />
+
+@Html.Kendo().TreeView().Name("myThings").DataSource(dataSource => dataSource
+    .Read(read => read.Action("Index", "Employees")
+)).DataTextField("Name")
